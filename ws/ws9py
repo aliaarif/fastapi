@@ -1,0 +1,32 @@
+from selenium import webdriver
+from parsel import Selector
+from extra_data import ExtraInfo
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from parsel import Selector
+import csv
+import time
+from selenium.webdriver.chrome.service import Service
+
+driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+url = 'https://www.google.com/maps/search/Gurgaon+Hotel/@28.4510568,76.9895883,1z/data=!4m5!2m4!5m2!5m1!1s2022-11-19!6e3'
+driver.get(url)
+page_content = driver.page_source
+response = Selector(page_content)
+results = []
+elements = response.xpath('//div[contains(@aria-label, "Results for Gurgaon Hotel")]/div/div[./a]')
+
+for el in elements:
+    link = el.xpath('./a/@href').extract_first('')      
+    if link: 
+        results.append({
+            link:link
+        })
+        
+outFile =  open("data.csv",'a+',newline="")
+writer = csv.writer(outFile)
+writer.writerow(link)
+# driver.close()
+print(results)
+

@@ -1,0 +1,79 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import presence_of_element_located
+from selenium.common.exceptions import NoSuchElementException
+import time
+import string
+import openpyxl
+import os
+from selenium.webdriver.common.by import By
+
+# Loading Selenium Webdriver
+driver = webdriver.Firefox()
+wait = WebDriverWait(driver, 5)
+
+# Opening Google maps
+driver.get("https://www.google.com/maps/search/Hotel+Gurgaon/@28.4488206,77.0246096,13z/data=!3m1!4b1!5m1!1e1")
+time.sleep(3)
+#Closing the google consent form
+button=driver.find_element(By.XPATH,'/html/body/c-wiz/div/div/div/div[2]/div[1]/div[4]/form/div/div/button')
+button.click()
+
+searchbox=driver.find_element(By.ID,'searchboxinput')
+location= "Paris"
+searchbox.send_keys(location)
+searchbox.send_keys(Keys.ENTER)
+time.sleep(5)
+cancelbut=driver.find_element(By.CLASS_NAME,'gsst_a')
+cancelbut.click()
+searchbox.send_keys("ASSURANCE")
+searchbox.send_keys(Keys.ENTER)
+time.sleep(5)
+
+# Locating the results section
+while 1==1 :
+    #Class name of a section
+    entries = driver.find_elements(By.CLASS_NAME,'lI9IFe')
+    print(str(entries))
+
+
+
+    # Prepare the excel file using the Openpyxl
+    wb = openpyxl.load_workbook("data.xlsx")
+    sheet = wb.worksheets[0]
+    #sheet = wb[sheetname]
+    #sheet.title = "plombier"
+    i=0
+    for entry in entries:
+        print(entry.text)
+        print(i)
+        i+=1
+        # Empty list
+        labels = []
+        # Extracting the Name, adress, Phone, and website:
+
+        name = entry.find_element(By.CSS_SELECTOR,'.qBF1Pd').text
+        #adress = entry.find_element(By.XPATH,'/html/body/div[3]/div[9]/div[8]/div/div[1]/div/div/div[4]/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div/div/div[4]/div[1]/span[2]').text
+        #phone = entry.find_element(By.XPATH,'/html/body/div[3]/div[9]/div[8]/div/div[1]/div/div/div[4]/div[1]/div[1]/div/div[2]/div[2]/div[1]/div/div/div/div[4]/div[2]/span[3]/jsl/span[2]').text
+        print(name)
+        try:
+            webcontainer = entry.find_element(By.CLASS_NAME,'section-result-action-container')
+            website = entry.find_element(By.TAG_NAME,'a').get_attribute("href")
+        except NoSuchElementException:
+            website = "No website could be found"
+        print(website)
+
+        # Try/except  to write the extracted info in the Excel file pass if doessn't exist
+        try:
+            sheet.append([location, name, website])
+        except IndexError:
+            pass
+
+    # saving the excel file
+    wb.save("C:/Users/ac/Desktop/plombier.xlsx")
+    time.sleep(4)
+    pagesuivantebut = driver.find_element(By.ID, 'ppdPk-Ej1Yeb-LgbsSe-tJiF1e')
+    pagesuivantebut.click()
+    time.sleep(5)

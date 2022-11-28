@@ -1,0 +1,16 @@
+from selenium import webdriver
+from selenium.webdriver.support import ui
+import pandas as pd
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+link = 'https://www.google.com.bd/maps/search/Florida+coffee/@27.604325,-80.9640709,9z/data=!3m1!4b1?hl=en'
+# url = 'https://www.google.com/maps/search/Gurgaon+Hotel/@28.4510568,76.9895883,1z/data=!4m5!2m4!5m2!5m1!1s2022-11-19!6e3'
+
+driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+driver.get(link)
+wait = ui.WebDriverWait(driver, 10)
+elem = [item.text for item in wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, "div.NrDZNb"))]
+df = pd.DataFrame(elem)
+print(df)
+driver.quit()

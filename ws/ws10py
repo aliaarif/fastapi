@@ -1,0 +1,49 @@
+from selenium import webdriver
+from bs4 import BeautifulSoup
+import pandas as pd
+from selenium.webdriver.common.by import By
+
+
+PATH = "/usr/lib/chromium-browser/chromedriver"
+options = webdriver.ChromeOptions() 
+
+
+options.add_argument("--disable-gpu")
+options.add_argument('enable-logging')
+options.add_argument("start-maximized")
+options.add_experimental_option("excludeSwitches", ["enable-automation"])
+options.add_experimental_option('useAutomationExtension', False)
+
+driver = webdriver.Chrome(options=options, executable_path=PATH)
+
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+
+url = 'https://www.google.com/maps/place/Mus%C3%A9e+Gr%C3%A9vin/@48.8718378,2.3400264,17z/data=!3m1!4b1!4m5!3m4!1s0x47e66e3e9be04a55:0x7def1a3ff98df458!8m2!3d48.8718157!4d2.3422113'
+driver.get(url)
+
+driver.find_element(By.XPATH, '//a[contains(@class, "hfpxzc")]').click()
+#to make sure content is fully loaded we can use time.sleep() after navigating to each page
+import time
+time.sleep(3)
+
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+review = []
+
+reviews = soup.find_all('span', class_='wiI7pd')
+
+for container in reviews:
+    rev = container.text.strip()
+    review.append(rev)
+
+#print(review)
+
+
+data = pd.DataFrame({
+    'reviews' : review
+    })
+
+data.to_csv("test_map.csv", sep=';', index=False, encoding='utf-8-sig')
+
+driver.quit()

@@ -1,0 +1,36 @@
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait 
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup as soup
+import time
+
+PATH = "/usr/lib/chromium-browser/chromedriver"
+driver = webdriver.Chrome(PATH)
+
+driver.get("https://www.google.com/maps/search/Gurgaon+Hotel/@28.4510568,76.9895883,1z/data=!4m5!2m4!5m2!5m1!1s2022-11-19!6e3")
+time.sleep(2)
+page = soup(driver.page_source, 'html.parser')
+
+#find the searchbar, enter search, and hit return
+search = driver.find_element(By.ID, 'searchboxinput')
+# search.send_keys("dentists in Austin Texas")
+search.send_keys(Keys.RETURN)
+driver.maximize_window() 
+
+time.sleep(7)
+
+#I want to get the 6th result down but it requires a sidebar scroll to load
+links = driver.find_element(By.XPATH, '//div[contains(@aria-label, "Results for Gurgaon Hotel")]/div/div[./a]')
+
+# ActionChains.move_to_element(link).perform()
+
+# links.click()
+
+print(links)
+
+time.sleep(4)
+
+driver.back()

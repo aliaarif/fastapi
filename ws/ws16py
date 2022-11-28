@@ -1,0 +1,41 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from time import sleep
+
+
+class Bot:
+    def __init__(self):
+        self.driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+        sleep(2)
+
+    def scroll(self):
+        # self.page = self.driver.get('https://www.google.com/maps/search/Gurgaon+Hotel/@28.4510568,76.9895883,1z/data=!4m5!2m4!5m2!5m1!1s2022-11-19!6e3')
+        # scroll_box = self.driver.execute_script("window.scrollTo(0, document.body.scrollheight)")
+
+        # initial_height, final_height = 0, 1
+        # while initial_height != final_height:
+        #     initial_height = final_height
+        #     sleep(1)
+        #     final_height = self.driver.execute_script("""
+        #     arguments[0].scrollTo(0, arguments[0].scrollHeight);
+        #     return arguments[0].scrollHeight;
+        #     """,scroll_box)    
+
+            url = 'https://www.google.com/maps/search/Gurgaon+Hotel/@28.4510568,76.9895883,1z/data=!4m5!2m4!5m2!5m1!1s2022-11-19!6e3'
+
+            self.driver.get(url)
+
+            
+            places = self.driver.find_element(By.XPATH, '//div[contains(@aria-label, "Results for Gurgaon Hotel")]/div/div[./a]')
+
+            print(len(places))
+
+            # for place in places:
+            #     webdriver.ActionChains(self.driver).move_to_element(place).perform()
+
+                # extract info
+    
+
+
+bot = Bot()
+bot.scroll()
