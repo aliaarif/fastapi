@@ -235,7 +235,7 @@ class WebDriver:
 		except Exception as e:
 			self.driver.quit()
 			# continue
-		time.sleep(1)
+		#time.sleep(1)
 		
 		# block = url[34:url.find('/data')]
 		# name = block.replace('+', ' ')
@@ -256,11 +256,12 @@ class WebDriver:
 		# self.scroll_the_page(name)
 		# self.expand_all_reviews(name)
 		# self.get_reviews_data(name)
-		self.driver.quit()
+		#self.driver.quit()
 
 		
         # return url
 		# return(self.location_data)
+		
 		return True
 
 
@@ -278,7 +279,7 @@ with open('output.csv','r') as urls:
     for url in urls:
         link = url
         # allData.scrape(url)
-        print('---------')
+        #print('---------')
         final = allData.scrape(link)
 	    # time.sleep(10)
         print(final)

@@ -1,6 +1,6 @@
 from ast import Not
 from cmath import phase
-# from tkinter.messagebox import NO
+from selenium.webdriver.chrome.service import Service
 from tracemalloc import start
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -8,55 +8,96 @@ from parsel import Selector
 # from photos import Photos
 import csv
 import time
+import os
 
 
-from selenium.webdriver.chrome.service import Service
+isExistDataFile = os.path.exists('hotels.csv')
+if isExistDataFile:
+    os.remove('hotels.csv')
+    outFile =  open("hotels.csv","w",newline="")
+    writer = csv.writer(outFile)
+    writer.writerow(["name",	 "address",	 "telephone",	 "email",	 "website",	 "category",	 "sub_category",	 "rating",	 "reviews",	 "opening_hours",	 "search_keyword",	 "search_location",	 "claimed",	 "permanently_closed",	 "latitude",	 "longitude",	 "map_link",	 "image_url",	 "title",	 "title_url",	 "description"])
+    
 
-# with open('data.csv', 'w') as data_file:
-#    pass 
+
 
 class ExtraInfo:
 
     
 
     def __init__(self):
-        # chromedrive_path=Service('./chromedriver/chromedriver')
-        # browser = webdriver.Chrome(service=s)
-        # chromedrive_path = './chromedriver/chromedriver' # use the path to the driver you downloaded from previous steps
+        # self.fileName = name
         self.driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
-        # self.driver = webdriver.Chrome('./chromedriver/chromedriver')
-        
 
-
-    def get_business_info(self, url):
+    def get_business_info1(self, url):
         self.driver.get(url)
-
-        print(url)
         
         page_content = self.driver.page_source 
         response = Selector(page_content) 
+
+        results = [] 
+
+
+        nameEnd = url.find('/data')
+
+        name = latLongUrl[34:nameEnd].replace("+", " ")
+        
+        info = response.xpath("//div[contains(@aria-label, 'Information for "+name+"')]")
+
+        for i in info:
+            ci = i.xpath('./div[8]/div/div[2]/div[2]/span/text()').get()
+            co = i.xpath('./div[8]/div/div[2]/div[2]/span[2]/text()').get()
+            results.append(ci+'|'+co)
+
+        results.append(description)
+        outFile =  open("hotels.csv","a+",newline="")
+        writer = csv.writer(outFile)
+        writer.writerow(results)
+        return True
+
+    
+    def get_business_info(self, url):
+        self.driver.get(url)
+        
+        page_content = self.driver.page_source 
+        response = Selector(page_content) 
+        
     
         results = []        
         photos = response.xpath('//img[@style="position: absolute; top: 50%; left: 50%; width: 84px; height: 97px; transform: translateY(-50%) translateX(-50%);"]/@src').get()
  
 
         if photos != None:
-            photos = photos.replace('=w80-h92-p-k-no', '')
+            photos = photos.replace("=w80-h92-p-k-no", '')
 
         latLongUrl = url 
-        latLongUrl = latLongUrl.replace('!16s%2Fg%', '|||')
-        latLongUrl = latLongUrl.replace('!5m2!4m1!1i2!8m2!3d', '???')
-        latLongUrl = latLongUrl.replace('!4d', ',,,')
+        latLongUrl = latLongUrl.replace("!16s%2Fg%", '|||')
+        latLongUrl = latLongUrl.replace("!5m2!4m1!1i2!8m2!3d", '???')
+        latLongUrl = latLongUrl.replace("!4d", ",,,")
 
         latStart = latLongUrl.find('???')
-        latEnd = latLongUrl.find(',')
+        latEnd = latLongUrl.find(",")
         
         llLat = latLongUrl[latStart+3:latEnd+1]
 
-        longStart = latLongUrl.find(',')
+        longStart = latLongUrl.find(",")
         longEnd = latLongUrl.find('|||')
 
         llLong = latLongUrl[longStart+3:longEnd]
+
+
+
+        nameEnd = latLongUrl.find('/data')
+
+        name = latLongUrl[34:nameEnd].replace("+", " ")
+        
+        info = response.xpath("//div[contains(@aria-label, 'Information for "+name+"')]")
+
+        
+        
+
+        
+        
 
         #name
         title = self.driver.find_element(By.CLASS_NAME, "DUwDvf").text
@@ -78,7 +119,7 @@ class ExtraInfo:
 
         #category
         # results.append(response.xpath('//span[@class="mgr77e"]/text()').get())
-        cat = self.driver.find_element(By.CLASS_NAME, "mgr77e").text
+        cat = self.driver.find_element(By.CLASS_NAME, "e07Vkf").text
         results.append(cat)
         #sub_category
         if cat.find('hotel'):
@@ -89,11 +130,16 @@ class ExtraInfo:
             results.append(sub_category)
         #rating
         results.append(self.driver.find_element(By.CLASS_NAME, "F7nice").text)
+        
         #review
-        # results.append(self.driver.find_element(By.CLASS_NAME, "DkEaL").text)
+        #results.append(self.driver.find_element(By.CLASS_NAME, "DkEaL").text)
         results.append('')
-        #opening_hours
-        results.append(self.driver.find_element(By.CLASS_NAME, "Io6YTe").text)
+        
+        for i in info:
+            ci = i.xpath('./div[8]/div/div[2]/div[2]/span/text()').get()
+            co = i.xpath('./div[8]/div/div[2]/div[2]/span[2]/text()').get()
+            results.append(ci+'|'+co)
+
         #search_keyword
         results.append(response.xpath('//input[@id="searchboxinput"]/@value').get())
         #search_location
@@ -122,7 +168,7 @@ class ExtraInfo:
         results.append(title)
         #title_url
         results.append(title)
-        city = search_location[7:sl.find(',')]
+        city = search_location[7:sl.find(",")]
         description = title +'is a '+cat+ ' which is located on '+address+' in '+city+'. The '+title+' offers '+sub_category+' services. If you need '+cat+' related services in '+city+' and nearby areas then you can use the below given '+title+' contact details or directly call on compnay helpline number '+phone+' for any question & quveries./n'
         description += 'For more detail, users can visit the officail website (website) of (Company Name)./n'
         description += 'Frequently Asked Question/n'
@@ -133,8 +179,7 @@ class ExtraInfo:
         description += 'Which are service areas is covered by '+title+'/n'
         description += city
         results.append(description)
-        outFile =  open("data.csv",'a+',newline="")
+        outFile =  open("hotels.csv","a+",newline="")
         writer = csv.writer(outFile)
         writer.writerow(results)
-
         return True

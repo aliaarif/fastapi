@@ -7,6 +7,8 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.common.exceptions import NoSuchElementException
 from parsel import Selector
+from extra_data import ExtraInfo
+from slugify import slugify
 
 import io 
 import csv 
@@ -23,246 +25,263 @@ import openpyxl
 import os
 
 
-STARTUP_DELAY = 2
-NEXT_PAGE_DELAY= 2
-WAIT_AFTER_ELEMENTS_LOADED = 1
-DELAY_TO_CHECK_IF_NEW_ELEMENT_IS_VISIBLE = 1
-LOAD_SPECIFIC_RESULT_DELAY = 2
-BACK_TO_MAIN_LIST_DELAY= 1
+isExistDataFile = os.path.exists('data.csv')
+if isExistDataFile:
+    os.remove('data.csv') 
 
-STOP_EXECUTION_AFTER = 50
+isExistOutputFile = os.path.exists('output.csv')
+if isExistOutputFile:
+    os.remove('output.csv') 
 
-data = []
-
-csv_file = 'hotels.csv'
-csv_columns = ['name','addr1','addr2','phone','web','loc','aux']
-
-
-with open('data.csv', 'w') as data_file, open('output.csv', 'w') as output_file:
-   pass 
-# print("Empty data File Created Successfully")
+# isExistDataFile = os.path.exists('hotels.csv')
+# if isExistDataFile:
+#     os.remove('hotels.csv')
+#     outFile =  open("hotels.csv","w",newline="")
+#     writer = csv.writer(outFile)
+#     writer.writerow(["name",	 "address",	 "telephone",	 "website",	 "category",	 "sub_category",	 "rating",	 "reviews",	 "search_keyword",	 "search_location",	 "claimed",	 "permanently_closed",	 "latitude",	 "longitude",	 "map_link",	 "image_url",	 "title",	 "title_url", 	 "description", "opening_hours"])    
 
 
-# csv_columns = ['name']
-# map_query = 'https://www.google.com/maps/search/hotels+near+Riyadh+Saudi+Arabia/'
-map_query = 'https://www.google.com/maps/search/hotels+in+gurgaon/@28.4511895,76.8989557,11z/data=!3m1!4b1'
-# map_query = 'https://www.google.com/maps/search/atm+in+sadulpur/@28.6392666,75.3604669,14z/data=!4m2!2m1!6e2'
 
-def clean_panel(ugly_text_blob):
-    text_blob = ugly_text_blob.splitlines()
-    addr = []
-    website = ''
-    phone = ''
-    location = ''
-    aux_unknown = ''
-    for line in range(len(text_blob)):
-        if line <= 1:
-            addr.append(text_blob[line])
-        elif line >= 2:
-            if 'closed' in text_blob[line].lower() or 'open' in text_blob[line].lower() or 'claim this' in text_blob[line].lower():
-                aux_unknown = ''    
-            else:
-                if text_blob[line].startswith('+966') or text_blob[line].startswith('966'):
-                    phone = text_blob[line]
-                elif '+' in text_blob[line] and (re.search('[a-zA-Z]', text_blob[line]) != None):
-                    location = text_blob[line]
-                else:
-                    website = text_blob[line]
-
-
-    print('Details: ')
-    for address in addr:
-        print(f'Address: {address[0:5]}...')
-    print(f'Phone: {phone}')
-    print(f'Location: {location}')
-    print(f'Website: {website}')
-    print(f'Aux: {aux_unknown}')
-    print('---------------------')
-    
-    # cleaned_block = {'addr1':addr[0], 'addr2':addr[1] if len(addr) > 1 else '', 'phone': phone, 'location': location, 'website': website, 'aux': aux_unknown}
-    cleaned_block = {'addr1':addr[0], 'addr2':addr[1] if len(addr) > 1 else '', 'phone': phone, 'location': location, 'website': website, 'aux': aux_unknown}
-    return cleaned_block
 
 
 def google_map_extractor(driver, uri):
     #load up the page
     driver.get(uri)
-
     more_pages = True
-
-    master_hotel_array = []
-    ctr = 0
-
-
-    while more_pages:
-        time.sleep(NEXT_PAGE_DELAY)
-
-        html = driver.page_source
-
-        divs = WebDriverWait(driver,5).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a')))
-
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        
-        response = Selector(html)
-        # entries=response.xpath('//div[contains(@aria-label, "Results for hotels in gurgaon")]/div/div[./a]')
-
-        time.sleep(WAIT_AFTER_ELEMENTS_LOADED)
- 
-
-        # result_list = soup.find_all('div', attrs={'class': 'm6QErb DxyBCb kA9KIf dS8AEf ecceSd'})
-        result_list = response.xpath('//div[contains(@aria-label, "Results for hotels in gurgaon")]/div/div[./a]')
-
-        # result_scroll_panel = driver.find_element(By.CSS_SELECTOR, "div[class^='m6QErb DxyBCb kA9KIf dS8AEf ecceSd']")
-        result_scroll_panel = driver.find_element(By.XPATH, "//div[contains(@aria-label, 'Results for hotels in gurgaon')]")
-
-        total_results = len(result_list)
-        
-        
-
-        
-
-        
-
-    # x = 0
-    # while x < total_results:   
-        i = 1
-        
-
-        for result_val in result_list:
-            print(f"Number of results found in this page: {total_results} and iteration is {i}")    
-            
-                
-            # print(f"\t {result_val['data-result-index']} ({result_val['area-label']})")
-            name = result_val.xpath('./a/@aria-label').extract_first()
-            link = result_val.xpath('./a/@href').extract_first()
-            # name = result_val['area-label']
-            # print('---------------------\n')
-            print(name)
-            # print('---------------------\n')
-
-            with open('data.csv', 'a') as fd:
-                fd.write(f'\n{link}')
-                # if (i == 122):
-                #     more_pages = False
-
-           
-
-            
-
-
-            # if name not in data:
-            #     data.append(name)
-            #     print(data)
-            # break
-
-            try:
-
-                this_result_div = driver.find_element(By.XPATH, "//div[@aria-label='"+name+"']")
-
-                driver.execute_script("arguments[0].scrollIntoView();", this_result_div)
-
-                i = i + 1 
-
-            except NoSuchElementException:
-                print('no data found for '+name)
-                pass
-
-            
-
-
-        # if x == total_results:
-        #     total_results =  total_results - x
-        #     print(f"Number of results found in this page: {total_results}")
-
-        # x=x+1
-        
-        # print(this_result_div)
-            
-        
-
-
-        
-
-        # ActionChains(driver).click(this_result_div).perform()
-
-        # time.sleep(LOAD_SPECIFIC_RESULT_DELAY)
-
-        # back_btn = driver.find_element(By.XPATH, "//button[@class='hYBOP FeXq4d']")
-
-        # this_hotel_html = driver.page_source
-
-        # this_hotel_info_panel = driver.find_element(By.XPATH, "//div[@aria-label='"+name+"']")
-        # # this_hotel_info_panel = driver.find_element(By.XPATH, '//div[contains(@aria-label, "Results for Hotel near Gurgaon")]/div/div[@aria-label='+name+']')
-        
-        # print(this_hotel_info_panel)
-
-        # # if this_hotel_info_panel:
-
-        # #     cleaned_data = clean_panel(this_hotel_info_panel.text)
-        # # else:
-        # #     print('sKIP dATA')
-
-        # cleaned_data = clean_panel(this_hotel_info_panel.text)
-        # cleaned_data['name'] = name
-
-        # try:
-        #    with open(csv_file, 'a+', encoding='utf-8') as csvfile:
-        #         writer = csv.DictWriter(csvfile, fieldnames=csv_columns, delimiter='|')
-        #         writer.writerow(name)
-        # except IOError:
-        #    print("I/O error while typing to write to CSV file")
-
-        # ActionChains(driver).click(this_result_div).perform()
-
-        # time.sleep(BACK_TO_MAIN_LIST_DELAY)
-
-        # next_btn = driver.find_element(By.XPATH, "//*[contains(@id, 'section-pagination-button-next')]")
-
-        # if back_btn is None:
-        #     # print('Aarif please find back btn')
-        #     more_pages = False
-        #     break
-        # time.sleep(NEXT_PAGE_DELAY)
-        # ActionChains(driver).click(this_result_div).perform()
-        # print('Next Clicked')
-            
-        with open('data.csv','r') as in_file, open('output.csv','w') as out_file:
-            seen = set() # set for fast O(1) amortized lookup
-            for line in in_file:
-                if line in seen: 
-                    continue # skip duplicate
-                seen.add(line)
-                out_file.write(line)
-
-
-
-
-    # print(data)
-
-    # outFile =  open("data.csv",'a+',newline="")
-    # writer = csv.writer(outFile)
-    # writer.writerow(data)
-
     
 
+    while more_pages:
+        time.sleep(2)
+        html = driver.page_source
+        divs = WebDriverWait(driver,3).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a')))
+        soup = BeautifulSoup(html, 'html.parser')
+        response = Selector(html)
+        time.sleep(1)
+        result_list = response.xpath('//div[contains(@aria-label, "Results for hotels in gurgaon")]/div/div[./a]')
+        # result_scroll_panel = driver.find_element(By.XPATH, "//div[contains(@aria-label, 'Results for hotels in gurgaon')]")
+        # total_results = len(result_list)
+        i = 1
+        for result_val in result_list:
+            #print(f"Number of results found in this page: {total_results} and iteration is {i}")    
+            name = result_val.xpath('./a/@aria-label').extract_first()
+            link = result_val.xpath('./a/@href').extract_first()
+            print(name)
+            with open('data.csv', 'a') as fd:
+                fd.write(f'\n{link}')
+                if (i == 1):
+                    more_pages = False
+            try:
+                this_result_div = driver.find_element(By.XPATH, '//div[@aria-label="'+name+'"]')
+                driver.execute_script("arguments[0].scrollIntoView();", this_result_div)
+                i = i + 1 
+            except NoSuchElementException:
+                #print('no data found for '+name)
+                pass
+        j = 0
+        with open('data.csv','r') as in_file, open('output.csv','w') as out_file:
+            seen = set() #set for fast O(1) amortized lookup
+            for link in in_file:
+                if link in seen: 
+                    continue # skip duplicate
+                seen.add(link)
+                if j != 0:
+                    out_file.write(link)
+                j = j +1
+
+
 driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
-time.sleep(5)
+time.sleep(1)
+map_query = 'https://www.google.com/maps/search/hotels+in+gurgaon'
 google_map_extractor(driver, map_query)
+                
+                
 
 
 
+with open('output.csv','r') as out_file:
+    for link in out_file:
+        # extraInfo = ExtraInfo()
+        # extraInfo.get_business_info(link)
+
+        results = [] 
+        driver.get(link)
+        
+        page_content = driver.page_source 
+        response = Selector(page_content) 
+
+    
+        photos = response.xpath('//img[@style="position: absolute; top: 50%; left: 50%; width: 84px; height: 97px; transform: translateY(-50%) translateX(-50%);"]/@src').get()
+ 
+
+        if photos != None:
+            photos = photos.replace("=w80-h92-p-k-no", '')
+
+        latLongUrl = link 
+        latLongUrl = latLongUrl.replace("!16s%2Fg%", '|||')
+        latLongUrl = latLongUrl.replace("!5m2!4m1!1i2!8m2!3d", '???')
+        latLongUrl = latLongUrl.replace("!4d", ",,,")
+
+        latStart = latLongUrl.find('???')
+        latEnd = latLongUrl.find(",")
+        
+        llLat = latLongUrl[latStart+3:latEnd+1]
+        llLat = str(llLat)
+        #llLat =  llLat.replace(',', '')
+
+        longStart = latLongUrl.find(",")
+        longEnd = latLongUrl.find('|||')
+
+        llLong = latLongUrl[longStart+3:longEnd+1]
+        llLong = str(llLong)
+        #llLong = llLong.replace('|', '')
+        
+
+        nameEnd = link.find('/data')
+
+        name = link[34:nameEnd].replace("+", " ")
+        results.append(name)
 
 
+       
 
 
+        address = response.xpath('//button[@data-tooltip="Copy address"]/@aria-label').get()
+        results.append(address[9:len(address)])
 
 
+        #phone
+        phone = response.xpath('//button[@data-tooltip="Copy phone number"]/@aria-label').get()
+        results.append(phone[7:len(phone)])
+        
+        
+
+        #website
+        website = response.xpath('//a[@data-tooltip="Open website"]/@href').get()
+        results.append(website)
+
+        #category
+        # results.append(response.xpath('//span[@class="mgr77e"]/text()').get())
+        cat = driver.find_element(By.CLASS_NAME, "mgr77e").text
+        results.append(cat)
+        #sub_category
+        if cat.find('hotel'):
+            sub_category = "A,B,C"
+            results.append(sub_category)
+        else:
+            sub_category = ""
+            results.append(sub_category)
+        #rating
+        rt = driver.find_element(By.CLASS_NAME, "F7nice").text
+        rating = rt[0:3]
+        results.append(rating)
+        
+        #review
+        #results.append(self.driver.find_element(By.CLASS_NAME, "DkEaL").text)
+        reviewRow1 = rt.replace(rating, '')
+        reviewRow2 = reviewRow1.replace('reviews', '')
+        #review = reviewRow[4:len(reviewRow)]
+        results.append(reviewRow2)
 
 
+        
+
+        #search_keyword
+        results.append(response.xpath('//input[@id="searchboxinput"]/@value').get())
+        #search_location
+        sl = response.xpath('//button[@data-tooltip="Copy plus code"]/@aria-label').get()
+        search_location = sl[11:len(sl)]
+        # results.append(self.driver.find_element(By.CLASS_NAME, "Io6YTe").text)
+        results.append(search_location)
+        #claimed
+        cl = driver.find_element(By.CLASS_NAME, "rogA2c").text
+        if cl.find('Claim'):
+            results.append("Unvarified")
+        else:
+            results.append('Verified')
+        #permanently_closed
+        results.append('')
+        #latitude
+        # results.append(url[latStart:latStart+3])
+        results.append(llLat)
+        #longitude
+        results.append(llLong)
+        #map_link
+        results.append(link)
+        #image_url
+        results.append(photos)
+        #title
+        results.append(name)
+        #title_url
+        results.append(slugify(name))
+        city = search_location[7:sl.find(",")]
+        description = name +'is a '+cat+ ' which is located on '+address+' in '+city+'. The '+name+' offers '+sub_category+' services. If you need '+cat+' related services in '+city+' and nearby areas then you can use the below given '+name+' contact details or directly call on compnay helpline number '+phone+' for any question & quveries./n'
+        description += 'For more detail, users can visit the officail website '+''+' of '+name+'./n'
+        description += 'Frequently Asked Question/n'
+        description += 'What are the services Offered by '+name+'/n'
+        description += sub_category+'/n'
+        description += 'Which is the address of '+name+'/n'
+        description += address+'/n'
+        description += 'Which are service areas is covered by '+name+'/n'
+        description += city
+        results.append(description)
+
+        info = response.xpath("//div[contains(@aria-label, 'Information for "+name+"')]")
+
+        for i in info:
+            ci = i.xpath('./div[8]/div/div[2]/div[2]/span/text()').get()
+            co = i.xpath('./div[8]/div/div[2]/div[2]/span[2]/text()').get()
+            results.append(ci+'|'+co)
+
+            
+        #imgBtn = response.xpath("//div[contains(@aria-label, 'Photo of "+name+"')]").text
+        # imgBtn = driver.find_element(By.CLASS_NAME, "Dx2nRe")
+
+        # #button=driver.find_element(By.CLASS_NAME, ".//*[@class='Photo of "+name+"']")
+        # imgBtn.click()
+       
+        # print(imgBtn.click())
+        
+        #imagesBtn = response.xpath("//div[contains(@class, 'm6QErb')]/div/div/button").get()
+        # imagesBtn = driver.find_element(By.XPATH, "//div[contains(@class, 'm6QErb')]/div/div/button")
+        # imagesBtn.click()
+
+        # time.sleep(5)
 
 
+        # img = driver.find_element(By.XPATH, '//div[@class="m6QErb DxyBCb kA9KIf dS8AEf"]/div/div[1]/a').get()
+        # # img = driver.find_element(By.CLASS_NAME, "//a[contains(@data-photo-index, '1')]").get()
+        # print(img)
 
 
+        # time.sleep(5)
+        
+        
+        #for btn in imagesBtn:
+
+        #     print(btn)
+        #     #imagesBtn.click()
+        #     time.sleep(1)
+
+        #imgessss = driver.find_element(By.CLASS_NAME, "U39Pmb").get()
+        
+
+        # for img in imgessss:
+        #     #imgessss = driver.find_element(By.CLASS_NAME, "U39Pmb").get()
+        #     print(img)
 
 
+        outFile =  open("hotels.csv","a+",newline="")
+        writer = csv.writer(outFile)
+        writer.writerow(results)
+        
+
+print('All data successfully scrapped!!!')  
+
+
+with open('../dist.csv','r') as out_file:
+    for search_str in out_file:
+        print(search_str)
+        # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+        #time.sleep(1)
+        # map_query = 'https://www.google.com/maps/search/hotels+in+gurgaon'+search_str
+        # google_map_extractor(driver, map_query)
