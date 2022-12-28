@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Rentkit - Directory & Listings Bootstrap 5 Template.">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+
+
+  <!-- Libs CSS -->
+
+  <link href="../assets/libs/magnific-popup/dist/magnific-popup.css" rel="stylesheet" />
+  <link href="../assets/libs/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../assets/libs/nouislider/dist/nouislider.min.css" rel="stylesheet">
+  <link href="../assets/libs/uppy/dist/uppy.min.css" rel="stylesheet">
+  <link href="../assets/libs/litepicker/dist/css/litepicker.css" rel="stylesheet">
+  <link href="../assets/libs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+  <link href="../assets/libs/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+
+
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="../assets/css/theme.min.css">
+  <title>Gulp - Get started with Bootstrap 5 Template</title>
+
+</head>
+
+<body>
+
+
+  <!-- main wrapper -->
+  <div class="docs-main-wrapper">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top border-bottom ">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../index.html"><img src="../assets/images/logo.svg"  alt="Rentkit Directory & Listing Bootstrap 5 Theme"></a>
+        <div class="ms-auto">
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="btn btn-primary" href="gulp.html#">Buy now</a></div>
+      </div>
+    </nav>
+    <!-- left sidebar -->
+    <div class="docs-nav-sidebar">
+      <div class="docs-nav">
+        <div class="navbar-collapse offcanvas-collapse" id="navbarNav">
+          <ul class="navbar-nav flex-column">
+            <li class="nav-header text-dark fw-bold">Getting Started</li>
+            <li class="nav-item"><a href="index.html" class="nav-link">Introduction</a></li>
+            <li class="nav-item"><a href="gulp.html" class="nav-link active">Gulp</a></li>
+            <li class="nav-item"><a href="filestructure.html" class="nav-link ">File Structures</a></li>
+            <li class="nav-item"><a href="changelog.html" class="nav-link ">Changelog</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- content  -->
+    <div class="docs-wrapper">
+      <div class="container-fluid pl-0">
+        <div class="row no-gutters">
+          <div class="col-xl-10 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="docs-content">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <!-- section heading -->
+                  <div class="pt-6 pt-lg-12  mb-0" id="intro">
+                    <h1 class="mb-1">Gulp</h1>
+                    <p class="lead ">Learn how to included npm scripts to automate your time-consuming tasks in your
+                      development workflow with Gulp toolkit.</p>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <!-- quick start -->
+                  <div class="pt-6 pt-lg-12 " id="quickstart">
+                    <h3 class="mb-3">Quick Start</h3>
+                    <p>Rentkit uses <a href="https://docs.npmjs.com/misc/scripts" target="_blank">NPM scripts </a> for
+                      its build system. Our <code class="highlighter-rouge">package.json</code> includes convenient
+                      methods for working with
+                      the framework, including compiling code, running tests, and more.</p>
+                    <p>To use our build system and run our documentation locally, you'll need a copy of Rentkit's source
+                      files and Node. Follow these steps and you should be ready to rock:</p>
+                    <ol>
+                      <li><a href="https://nodejs.org/en/" target="_blank">Download and install Node.js </a>, which we
+                        use to manage our dependencies.</li>
+                      <li><a href="https://gulpjs.com/docs/en/getting-started/quick-start" target="_blank">Download and
+                          install Gulp.js </a>, which we use to manage our dependencies.</li>
+                      <li>Navigate to the root <code class="highlighter-rouge">/rentkit</code> directory and run <code
+                          class="highlighter-rouge">npm install</code> to install our local dependencies listed in <code
+                          class="highlighter-rouge">package.json</code>.</li>
+                    </ol>
+                    <p>When completed, you'll be able to run the various commands provided from the command line.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="mb-5" id="installgulp">
+                      <!-- content -->
+                    <div class="mt-3 mb-3">
+                      <h4 class="mb-2">Installing NPM modules </h4>
+                      <p>First, change the command line path into your project where Rentkit folder is located. if you
+                        have not done this before, you may check the following article to quick start, you may run <code
+                          class="highlighter-rouge">package.json</code> file by using the following command:</p>
+                    </div>
+                    <div class="mt-4 mb-4">
+                      <div class="copy-content copy-content-height">
+                        <div class="code-toolbar">
+                          <pre class="language-markup"><code class="language-markup">npm install</code></pre>
+                        </div>
+                      </div>
+                      <p>If you check the project folder when the command has finished executing, you should see that
+                        Gulp has created a <code class="highlighter-rouge">node_modules</code> folder.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="mb-5">
+                      <!-- content -->
+                    <div class="mt-3 mb-3">
+                      <h4 class="mb-2">Run Gulp </h4>
+                      <p>Compile and watch the SCSS/JS/HTML, use Live Reload to update browsers instantly, start a
+                        server, and pop a tab in your default browser. Any changes made to the source files will be
+                        compiled as soon as you save
+                        the file. To try it out run:</p>
+                    </div>
+                    <div class="mt-4 mb-4">
+                      <div class="copy-content copy-content-height">
+                        <div class="code-toolbar">
+                          <pre class="language-markup"><code class="language-markup">gulp</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-4 mb-4">
+                      <div>
+                        <p> Generates a <code>/dist</code> directory with all the production files. </p>
+                      </div>
+                      <div class="copy-content copy-content-height">
+                        <div class="code-toolbar">
+                          <pre class="language-markup"><code class="language-markup">gulp build</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 border-start d-none d-xl-block">
+            <!-- sidebar nav -->
+            <div class="sidebar-nav-fixed">
+              <ul class="list-unstyled">
+                <li><a href="gulp.html#intro" class="active">Introduction</a></li>
+                <li><a href="gulp.html#quickstart">Quick Start</a></li>
+                <li><a href="gulp.html#installgulp">Install Gulp</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer -->
+  <div class="docs-footer">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- content -->
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <p class="mb-0">Design by <a href="https://themeforest.net/user/jitu/portfolio" target="_blank">Jitu
+              Chauhan</a> Developed by <a href="../../../page/1/index.html" target="_blank">Ease Template</a></p>
+        </div>
+        <!-- links -->
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="text-md-end docs-footer-links d-none d-sm-block">
+            <a href="javascript:void(0);">About</a>
+            <a href="javascript:void(0);">Support</a>
+            <a href="javascript:void(0);">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- scripts -->
+  <!-- Libs JS -->
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
+  <script src="../assets/libs/select2/dist/js/select2.full.min.js"></script>
+  <script src="../assets/libs/select2/dist/js/select2.min.js"></script>
+  <script src="../assets/libs/jquery-raty-js/lib/jquery.raty.js"></script>
+  <script src="../assets/libs/quill/dist/quill.min.js"></script>
+  <script src="../assets/libs/uppy/dist/uppy.min.js"></script>
+  <script src="../assets/libs/litepicker/dist/litepicker.js"></script>
+  <script src="../assets/libs/prismjs/prism.js"></script>
+  <script src="../assets/libs/leaflet/dist/leaflet.js"></script>
+  <script src="../assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+  <script src="../assets/libs/nouislider/dist/nouislider.min.js"></script>
+  <script src="../assets/libs/wnumb/wNumb.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
+  <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+
+  <!-- Theme JS -->
+  <script src="../assets/js/theme.min.js"></script>

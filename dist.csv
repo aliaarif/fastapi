@@ -18,3 +18,60 @@ hotels in rohtak
 hotels in sirsa
 hotels in sonipat
 hotels in yamuna nagar
+
+
+CREATE TABLE places (name text,address text,telephone text,website text,category text,sub_category text,rating text,reviews text,search_keyword text,search_location text,claimed text,permanently_closed text,latitude text,longitude text,map_link text,image_url text,title text,title_url text,description text,opening_hours text);
+
+
+LOAD DATA INFILE '/home/ali/var/www/fastapi/ws/hotels.csv' replace INTO TABLE places FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n';
+
+
+
+
+
+LOAD DATA LOCAL INFILE "/home/ali/var/www/fastapi/ws/hotels.csv" INTO TABLE places;
+
+sudo mysql -u root -p obelcon < /home/ali/var/www/fastapi/ws/hotels.sql
+
+mysqldump obelcon < /home/ali/var/www/fastapi/ws/hotels.sql
+
+
+
+
+
+noun = ['japanese', 'chinise', 'couple friendly', 'family', 'xyz']
+
+if noun in
+custom_noun = 
+
+
+
+category = ['hotels', 'reataurents', 'malls', 'photographer']
+city = ['Gurgaon', 'Delhi', 'Mumbai', 'Churu]
+
+locality = 'in sector {no}'
+
+
+query = '{category} in {city}'
+
+
+
+
+sample_query = 'hotels in gurgaon'
+
+load  sample_query
+
+
+on current page  (in url made 'sample_query')
+
+custom_quesry = '{noun} {category} in {city} {locality}'
+
+
+
+
+
+
+
+
+
+http://localhost:8080/{city}/

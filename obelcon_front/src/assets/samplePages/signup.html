@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Dashkit :: Signup</title>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-W7H6Z2T");
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+  </head>
+
+  <body
+    x-data="initTheme()"
+    :class="{
+        'is-dark': $store.app.isDark,
+        '': !$store.app.isDark
+    }"
+  >
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-W7H6Z2T"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    
+    <!-- Wrapper -->
+    <div class="auth-wrapper columns is-gapless">
+      <!-- Form section -->
+      <div class="column is-5">
+        <div class="hero is-fullheight form-login-hero">
+          <div class="hero-heading">
+            <div class="auth-logo mobile:text-centered">
+              <a href="index.html">
+                <img
+                  class="light-image-block top-logo"
+                  src="img/logo/dashkit-violet.svg"
+                  alt=""
+                />
+                <img
+                  class="dark-image-block top-logo"
+                  src="img/logo/dashkit-violet-dark.svg"
+                  alt=""
+                />
+              </a>
+            </div>
+          </div>
+          <div class="hero-body">
+            <div class="container">
+              <div class="columns">
+                <div class="column is-12">
+                  <div class="auth-content">
+                    <h2>Join Us Now.</h2>
+                    <p>Start by creating your account</p>
+                    <a href="login.html">I already have an account </a>
+                  </div>
+                  <div class="auth-form-wrapper">
+                    <!-- Login Form -->
+                    <form>
+                      <div id="signin-form" class="login-form">
+                        <!-- Input -->
+                        <div class="field">
+                          <div class="control has-icon">
+                            <input
+                              class="input"
+                              type="text"
+                              placeholder="Username"
+                            />
+                            <span class="form-icon">
+                              <i data-feather="user"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <!-- Input -->
+                        <div class="field">
+                          <div class="control has-icon">
+                            <input
+                              class="input"
+                              type="text"
+                              placeholder="Email Address"
+                            />
+                            <span class="form-icon">
+                              <i data-feather="mail"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <!-- Input -->
+                        <div class="field">
+                          <div class="control has-icon">
+                            <input
+                              class="input"
+                              type="password"
+                              placeholder="Password"
+                            />
+                            <span class="form-icon">
+                              <i data-feather="lock"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <!-- Input -->
+                        <div class="field">
+                          <div class="control has-icon">
+                            <input
+                              class="input"
+                              type="password"
+                              placeholder="Repeat Password"
+                            />
+                            <span class="form-icon">
+                              <i data-feather="lock"></i>
+                            </span>
+                          </div>
+                        </div>
+    
+                        <div class="setting-item is-flex is-align-items-center">
+                          <label class="f-switch is-primary">
+                            <input
+                              type="checkbox"
+                              class="is-switch"
+                              id="busy-mode-toggle"
+                            />
+                            <i></i>
+                          </label>
+                          <div class="setting-meta">
+                            <span class="is-font text-light"
+                              >Receive promotional offers</span
+                            >
+                          </div>
+                        </div>
+    
+                        <!-- Submit -->
+                        <div class="control login">
+                          <button
+                            class="button is-secondary is-medium is-raised is-fullwidth"
+                          >
+                            Sign Up
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Image section (hidden on mobile) -->
+      <div class="column login-column is-7 is-hidden-mobile hero-banner has-image">
+        <div class="hero login-hero is-fullheight">
+          <div class="hero-body">
+            <div class="columns">
+              <div class="column is-10 is-offset-1">
+                <img
+                  class="signup-image"
+                  src="img/illustrations/apps-slant.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="hero-footer">
+            <p class="has-text-centered"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!--Back to top-->
+    <div
+      class="progress-wrap is-hidden"
+      x-data="initBackToTop()"
+      x-init="setup()"
+      x-on:scroll.window="scroll()"
+      x-bind:class="{
+            'active-progress': scrolled,
+            '': !scrolled,
+            }"
+      x-on:click="scrollTop()"
+    >
+      <svg
+        class="progress-circle svg-content"
+        width="100%"
+        height="100%"
+        viewBox="-1 -1 102 102"
+      >
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+      </svg>
+    
+      <svg
+        class="inner-arrow"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/bundle.js"></script>
+  </body>
+</html>
